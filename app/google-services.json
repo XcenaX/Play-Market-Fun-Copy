@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "568414062194",
+    "firebase_url": "https://playmarket-2f8ce.firebaseio.com",
+    "project_id": "playmarket-2f8ce",
+    "storage_bucket": "playmarket-2f8ce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:568414062194:android:7493304a774f00e1c124eb",
+        "android_client_info": {
+          "package_name": "kz.sirius.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "568414062194-vlgujf4f8j9pv9jsar6htvki2nq6vvos.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQPRGHQL3flo_e3CMg6d0HHZS4Of-KXkQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "568414062194-vlgujf4f8j9pv9jsar6htvki2nq6vvos.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
