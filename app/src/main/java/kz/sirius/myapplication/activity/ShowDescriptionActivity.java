@@ -1,5 +1,6 @@
 package kz.sirius.myapplication.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -65,8 +66,15 @@ public class ShowDescriptionActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         if (menuItem.getItemId() == android.R.id.home) {
             finish();
+        } else if(menuItem.getItemId() == R.id.action_search){
+            goToSearchPage();
         }
         return super.onOptionsItemSelected(menuItem);
+    }
+
+    private void goToSearchPage() {
+        Intent myIntent = new Intent(ShowDescriptionActivity.this, AllAppsWithSearchActivity.class);
+        ShowDescriptionActivity.this.startActivity(myIntent);
     }
 
 
@@ -79,9 +87,6 @@ public class ShowDescriptionActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
-
-
-
         return true;
     }
 

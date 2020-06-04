@@ -33,7 +33,7 @@
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
             <meta-data android:name="android.myApp.searchable"
-                android:resource="@xml/searchable"/>
+            android:resource="@xml/searchable"/>
         </activity>
 
         <activity
@@ -55,15 +55,17 @@
 
         <activity
             android:label="Play Market"
-            android:name=".activity.AllAppsActivity"
-            android:theme="@style/AppTheme"
-            >
+            android:name=".activity.AllAppsWithSearchActivity"
 
+            >
+            <meta-data android:name="android.app.default_searchable"
+                android:value=".SearchableActivity" android:launchMode="singleTop" />
         </activity>
 
         <activity
-            android:name=".activity.RegistrationActivity"
-            android:theme="@style/AppThemeGreen"
+            android:label="Play Market"
+            android:name=".activity.AllAppsActivity"
+            android:theme="@style/AppTheme"
             >
 
         </activity>

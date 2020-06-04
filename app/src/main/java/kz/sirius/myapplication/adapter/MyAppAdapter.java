@@ -30,6 +30,7 @@ public class MyAppAdapter extends RecyclerView.Adapter<MyAppAdapter.MyViewHolder
     private ArrayList<MyApp> myApps = new ArrayList<>();
     private ArrayList<MyApp> allApps;
     private String categoryName;
+    private ArrayList<Category> myCategories;
 
     public void setListener(OnCollaborationClickListener listener) {
         this.listener = listener;
@@ -39,6 +40,13 @@ public class MyAppAdapter extends RecyclerView.Adapter<MyAppAdapter.MyViewHolder
         this.myApps = myPreviews;
         this.categoryName = categoryName;
         this.allApps = new ArrayList<>(myApps);
+        notifyDataSetChanged();
+    }
+
+    public void setContent(ArrayList<MyApp> myPreviews, ArrayList<Category> myCategories) {
+        this.myApps = myPreviews;
+        this.allApps = new ArrayList<>(myApps);
+        this.myCategories = myCategories;
         notifyDataSetChanged();
     }
 
@@ -54,7 +62,12 @@ public class MyAppAdapter extends RecyclerView.Adapter<MyAppAdapter.MyViewHolder
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.appTitle.setText(myApps.get(position).getTitle());
         holder.appSize.setText(String.valueOf(myApps.get(position).getSize()) + " МБ");
-        holder.appCategory.setText(categoryName);
+
+        if(categoryName != null){
+            holder.appCategory.setText(categoryName);
+        } else{
+            holder.appCategory.setText(getCategory(myApps.get(position).getCategoryId(), myCategories).getName());
+        }
 
         new DownloadImageTask(holder.appImage)
                 .execute(myApps.get(position).getImg_url());
@@ -64,6 +77,13 @@ public class MyAppAdapter extends RecyclerView.Adapter<MyAppAdapter.MyViewHolder
                 listener.onItemClicked(position);
             }
         });
+    }
+
+    public Category getCategory(int categoryId, ArrayList<Category> allCategory){
+        for(int i = 0; i < allCategory.size(); i++){
+            if(allCategory.get(i).getCategoryId() == categoryId)return allCategory.get(i);
+        }
+        return null;
     }
 
 
@@ -86,9 +106,9 @@ public class MyAppAdapter extends RecyclerView.Adapter<MyAppAdapter.MyViewHolder
             List<MyApp> filteredApps = new ArrayList<>();
 
             if(constraint.toString().isEmpty()){
-                filteredApps.addAll(myApps);
+                filteredApps.addAll(allApps);
             } else{
-                for(MyApp app : myApps){
+                for(MyApp app : allApps){
                     if(app.getTitle().toLowerCase().contains(constraint.toString().toLowerCase())){
                         filteredApps.add(app);
                     }

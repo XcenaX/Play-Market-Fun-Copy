@@ -73,8 +73,27 @@ public class AllAppsWithSearchActivity extends AppCompatActivity {
             }
         });
 
+        DatabaseReference categoriesReference = FirebaseDatabase.getInstance().getReference().child("categories");
+        categoriesReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(categories.size() != 0){
+                    return;
+                }
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Gson gson = new Gson();
+                    String Json = gson.toJson(snapshot.getValue());
+                    Category category = gson.fromJson(Json,Category.class);
+                    categories.add(category);
+                }
+                appAdapter.notifyDataSetChanged();
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
 
         DatabaseReference appsReference = FirebaseDatabase.getInstance().getReference().child("apps");
         appsReference.addValueEventListener(new ValueEventListener() {
@@ -89,7 +108,7 @@ public class AllAppsWithSearchActivity extends AppCompatActivity {
                     MyApp app = gson.fromJson(Json,MyApp.class);
                     apps.add(app);
                 }
-                appAdapter.setContent(apps, null);
+                appAdapter.setContent(apps, categories);
                 appAdapter.notifyDataSetChanged();
             }
 
@@ -131,7 +150,7 @@ public class AllAppsWithSearchActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.search_menu, menu);
 
         MenuItem item = menu.findItem(R.id.action_search);
         androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) item.getActionView();

@@ -13,7 +13,7 @@
     <style name="AppThemeGreen" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#4CAF50</item>
-        <item name="colorPrimaryDark">#009688</item>
+        <item name="colorPrimaryDark">@color/colorAccent</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">#F44336</item>
         <item name="android:textColorPrimaryInverse">#03A9F4</item>

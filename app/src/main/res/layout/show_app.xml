@@ -1,13 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:myApp="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/loader"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:visibility="visible"
+        myApp:layout_constraintBottom_toBottomOf="parent"
+        myApp:layout_constraintEnd_toEndOf="parent"
+        myApp:layout_constraintStart_toStartOf="parent"
+        myApp:layout_constraintTop_toTopOf="parent"
+
+
+        />
 
     <ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:myApp="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/mainScroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:visibility="gone"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -232,9 +253,9 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/previewsList"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                myApp:layout_constraintTop_toBottomOf="@+id/downloadButton"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                myApp:layout_constraintTop_toBottomOf="@+id/downloadButton"
                 tools:layout_editor_absoluteX="5dp" />
 
             <LinearLayout
@@ -243,7 +264,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
 
-                android:padding="20dp"
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="0dp"
                 myApp:layout_constraintTop_toBottomOf="@+id/previewsList"
                 tools:layout_editor_absoluteX="1dp">
 
@@ -251,21 +274,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:text="Описание"
                     android:clickable="true"
                     android:onClick="onDescriptionClick"
-                    android:textSize="20dp" />
+                    android:text="Описание"
+                    android:textSize="20dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:layout_width="30sp"
                     android:layout_height="30sp"
                     android:layout_gravity="center_vertical"
-                    android:foregroundGravity="right"
-                    android:src="@drawable/arrow_right"
                     android:clickable="true"
+                    android:foregroundGravity="right"
                     android:onClick="onDescriptionClick"
-                    />
+                    android:src="@drawable/arrow_right" />
 
             </LinearLayout>
 
@@ -282,12 +305,14 @@
                 tools:layout_editor_absoluteX="5dp" />
 
             <LinearLayout
-                android:id="@+id/linearLayout"
+                android:id="@+id/linearLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 myApp:layout_constraintTop_toBottomOf="@+id/short_description"
-                android:padding="20dp"
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="0dp"
                 >
 
                 <TextView
@@ -296,6 +321,7 @@
                     android:layout_weight="1"
                     android:text="Новинки"
                     android:textStyle="bold"
+                    android:textColor="@color/black"
                     android:textSize="20sp" />
 
                 <ImageView
@@ -311,7 +337,7 @@
                 android:id="@+id/uiList2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                myApp:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                myApp:layout_constraintTop_toBottomOf="@+id/linearLayout3"
                 tools:layout_editor_absoluteX="5dp" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -327,13 +353,17 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 myApp:layout_constraintTop_toBottomOf="@+id/uiList2"
-                android:padding="20dp">
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="0dp"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Популярное"
+                    android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -350,3 +380,6 @@
 
 
     </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

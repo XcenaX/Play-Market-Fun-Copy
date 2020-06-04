@@ -68,10 +68,11 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayoutManager layoutManager2;
     private LinearLayoutManager layoutManager3;
     private LinearLayoutManager layoutManager4;
+    private LinearLayoutManager layoutManager5;
 
     private ScrollView scrollView;
-
     private ContentLoadingProgressBar progressBar;
+
     private ArrayList<Category> allCategories = new ArrayList<Category>();
 
     @Override
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         MyRecyclerAdapter listAdapter = new MyRecyclerAdapter();
         MyRecyclerAdapter listAdapter2 = new MyRecyclerAdapter();
         MyRecyclerAdapter arcadesListAdapter = new MyRecyclerAdapter();
+        MyRecyclerAdapter strategyListAdapter = new MyRecyclerAdapter();
         MyCategoriesAdapter categoriesListAdapter = new MyCategoriesAdapter();
 
 
@@ -114,11 +116,13 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<MyApp> list = new ArrayList<MyApp>();
         ArrayList<MyApp> popularApps = new ArrayList<MyApp>();
         ArrayList<MyApp> arcades = new ArrayList<MyApp>();
+        ArrayList<MyApp> strategies = new ArrayList<MyApp>();
 
         ArrayAdapter adapter = new ArrayAdapter<MyApp>(this, R.layout.activity_main, list);
         ArrayAdapter adapter2 = new ArrayAdapter<MyApp>(this, R.layout.activity_main, popularApps);
         ArrayAdapter adapter3 = new ArrayAdapter<MyApp>(this, R.layout.activity_main, arcades);
         ArrayAdapter adapter4 = new ArrayAdapter<Category>(this, R.layout.activity_main, allCategories);
+        ArrayAdapter adapter5 = new ArrayAdapter<MyApp>(this, R.layout.activity_main, strategies);
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("categories");
         ref.addValueEventListener(new ValueEventListener() {
@@ -149,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
                     list.add(gson.fromJson(Json,MyApp.class));
                     popularApps.add(gson.fromJson(Json,MyApp.class));
                     arcades.add(gson.fromJson(Json,MyApp.class));
+                    strategies.add(gson.fromJson(Json,MyApp.class));
                 }
 
                 Collections.sort(list, new Comparator<MyApp>(){
@@ -184,20 +189,17 @@ public class MainActivity extends AppCompatActivity {
 
                 listAdapter2.setContent(popularApps);
 
-                for(int i = 0; i < arcades.size(); i++){
-                    Category category = getCategory(arcades.get(i).getCategoryId(), allCategories);
-                    if(!category.getName().equals("Аркады")){
-                        arcades.remove(i);
-                        i--;
-                    }
-                }
+                sortByCategory(arcades, "Аркады");
+                sortByCategory(strategies, "Стратегии");
 
                 arcadesListAdapter.setContent(arcades);
+                strategyListAdapter.setContent(strategies);
 
                 adapter.notifyDataSetChanged();
                 adapter2.notifyDataSetChanged();
                 adapter3.notifyDataSetChanged();
                 adapter4.notifyDataSetChanged();
+                adapter5.notifyDataSetChanged();
                 arcadesListAdapter.notifyDataSetChanged();
 
 
@@ -214,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView uiList = findViewById(R.id.uiList);
         RecyclerView uiList2 = findViewById(R.id.uiList2);
         RecyclerView arcadesList = findViewById(R.id.arcadesList);
+        RecyclerView strategiesList = findViewById(R.id.strategyList);
         RecyclerView recyclerCategories = findViewById(R.id.categoriesList);
 
 
@@ -242,6 +245,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        strategyListAdapter.setListener(new OnCollaborationClickListener() {
+            @Override
+            public void onItemClicked(int position) {
+                MyApp myApp = strategies.get(position);
+                onAppClick(myApp);
+            }
+        });
+
         categoriesListAdapter.setListener(new OnCollaborationClickListener() {
             @Override
             public void onItemClicked(int position) {
@@ -253,23 +264,37 @@ public class MainActivity extends AppCompatActivity {
         listAdapter.setContent(list);
         listAdapter2.setContent(popularApps);
         arcadesListAdapter.setContent(arcades);
+        strategyListAdapter.setContent(strategies);
         categoriesListAdapter.setContent(allCategories);
 
         uiList.setAdapter(listAdapter2);
         uiList2.setAdapter(listAdapter);
         arcadesList.setAdapter(arcadesListAdapter);
+        strategiesList.setAdapter(strategyListAdapter);
         recyclerCategories.setAdapter(categoriesListAdapter);
 
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         layoutManager2 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         layoutManager3 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         layoutManager4 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        layoutManager5 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
         uiList.setLayoutManager(layoutManager);
         uiList2.setLayoutManager(layoutManager2);
         arcadesList.setLayoutManager(layoutManager3);
         recyclerCategories.setLayoutManager(layoutManager4);
+        strategiesList.setLayoutManager(layoutManager5);
 
+    }
+
+    public void sortByCategory(ArrayList<MyApp> apps, String categoryName){
+        for(int i = 0; i < apps.size(); i++){
+            Category category = getCategory(apps.get(i).getCategoryId(), allCategories);
+            if(!category.getName().equals(categoryName)){
+                apps.remove(i);
+                i--;
+            }
+        }
     }
 
     public Category getCategory(int categoryId, ArrayList<Category> allCategory){
@@ -299,23 +324,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
-
-        MenuItem item = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) item.getActionView();
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-
-                return false;
-            }
-        });
-
         return true;
     }
 

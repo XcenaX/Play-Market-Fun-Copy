@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -60,6 +62,9 @@ public class ShowAppActivity extends AppCompatActivity {
     MyRecyclerAdapter listAdapter2 = new MyRecyclerAdapter();
     MyPreviewsAdapter listAdapter3 = new MyPreviewsAdapter();
 
+    private ScrollView scrollView;
+    private ContentLoadingProgressBar progressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +77,9 @@ public class ShowAppActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        progressBar = findViewById(R.id.loader);
+        scrollView = findViewById(R.id.mainScroll);
 
         RecyclerView uiList = findViewById(R.id.uiList);
         RecyclerView uiList2 = findViewById(R.id.uiList2);
@@ -89,6 +97,7 @@ public class ShowAppActivity extends AppCompatActivity {
                 String Json = gson.toJson(snapshot.getValue());
                 myApp = gson.fromJson(Json,MyApp.class);
                 setAllInformation();
+
             }
 
             @Override
@@ -150,6 +159,9 @@ public class ShowAppActivity extends AppCompatActivity {
                 listAdapter2.setContent(popularApps);
                 adapter.notifyDataSetChanged();
                 adapter2.notifyDataSetChanged();
+
+                progressBar.setVisibility(View.INVISIBLE);
+                scrollView.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -249,8 +261,15 @@ public class ShowAppActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         if (menuItem.getItemId() == android.R.id.home) {
             finish();
+        } else if(menuItem.getItemId() == R.id.action_search){
+            goToSearchPage();
         }
         return super.onOptionsItemSelected(menuItem);
+    }
+
+    private void goToSearchPage() {
+        Intent myIntent = new Intent(ShowAppActivity.this, AllAppsWithSearchActivity.class);
+        ShowAppActivity.this.startActivity(myIntent);
     }
 
     public void onAppClick(MyApp myApp){
@@ -269,14 +288,6 @@ public class ShowAppActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main_menu, menu);
-
-        // Associate searchable configuration with the SearchView
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.action_search)
-                .getActionView();
-        searchView.setSearchableInfo(searchManager
-                .getSearchableInfo(getComponentName()));
-
         return true;
     }
 
